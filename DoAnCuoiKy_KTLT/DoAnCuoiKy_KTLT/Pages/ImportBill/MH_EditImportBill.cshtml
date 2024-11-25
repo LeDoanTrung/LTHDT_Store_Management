@@ -1,0 +1,295 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Import_Bill.MH_EditImportBillModel
+@using DoAnCuoiKy_KTLT.Entiy;
+@using DoAnCuoiKy_KTLT.Entity
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu;
+@{
+    string answer = "";
+    HttpContext.Session.Remove("answer");
+
+    Product[] dssp2 = XuLyProduct.ReadProductList();
+
+
+    ImportBill[] dssp = XuLyImportBill.ReadImportBillList();
+
+    DateOnly createDate = DateOnly.MinValue;
+
+
+
+    int masb = 0;
+
+
+    if (!int.TryParse(Request.Query["masb"], out masb))
+    {
+        answer = "ID Import Bill không hợp lệ.";
+    }
+
+    if (Request.Method == "GET")
+    {
+        if (answer == string.Empty)
+        {
+            // Gọi phương thức tìm kiếm Import Bill theo ID từ lớp xử lý nghiệp vụ
+            ImportBill? Import = XuLyImportBill.SearchImportBillById(masb);
+
+            if (Import.HasValue)
+            {
+                createDate = Import.Value.CreatedDate;
+
+            }
+            else
+            {
+                answer = "Không tìm thấy danh mục tương ứng.";
+            }
+        }
+    }
+    // Kiểm tra nếu là phương thức POST
+    else if (Request.Method == "POST")
+    {
+
+
+        int auId = XuLyDetail.GenerateDetailBillId();
+
+        if (!DateOnly.TryParse(Request.Form["createDate"], out createDate))
+        {
+            answer += "Ngày tạo không hợp lệ. ";
+        }
+        else
+        {
+            // Kiểm tra ngày tạo không được lớn hơn ngày hiện tại
+            if (createDate > DateOnly.FromDateTime(DateTime.Now))
+            {
+                answer += "Ngày tạo không được lớn hơn ngày hiện tại. ";
+            }
+        }
+
+        if (answer == string.Empty)
+        {
+
+            // Tạo một mảng động để lưu trữ các Detail Bill
+            DetailBill[] detailBills = new DetailBill[dssp2.Length];
+
+
+            //Hoàn lại số lượng quantity của Product trước khi cập nhật lại Import Bill
+            ImportBill? currentBill = XuLyImportBill.SearchImportBillById(masb);
+
+            if (currentBill.HasValue)
+            {
+                int[] detailIDcurrent = currentBill.Value.detailBillsID;
+
+                for (int i = 0; i < detailIDcurrent.Length; i++)
+                {
+                    DetailBill? detail = XuLyDetail.SearchDetailBillById(detailIDcurrent[i]);
+
+                    XuLyProduct.UpdateStockQuantityInDatabase(detail.Value.productId, detail.Value.quantity);
+
+
+                }
+            }
+            else
+            {
+                answer += "Xảy ra lỗi trong quá trình cập nhật Import Bill";
+            }
+
+
+
+            // Biến đếm cho mảng detailBills
+            int detailCount = 0;
+
+            // Biến kiểm tra số lượng tồn kho
+            bool isQuantityValid = true;
+
+            // Kiểm tra xem người dùng đã chọn ít nhất một sản phẩm và nhập số lượng tương ứng hay không
+            bool isAtLeastOneProductSelected = false;
+
+            foreach (var product in dssp2)
+            {
+                if (Request.Form.ContainsKey("selectedProducts") && Request.Form["selectedProducts"].Contains(product.Id.ToString()))
+                {
+                    isAtLeastOneProductSelected = true;
+                    break;
+                }
+            }
+
+            if (!isAtLeastOneProductSelected)
+            {
+                answer = "Vui lòng chọn ít nhất một sản phẩm để cập nhật hóa đơn.";
+            }
+            else
+            {
+                // Duyệt qua các sản phẩm được chọn
+                foreach (var product in dssp2)
+                {
+                    // Kiểm tra xem sản phẩm có được chọn không
+                    if (Request.Form.ContainsKey("selectedProducts") && Request.Form["selectedProducts"].Contains(product.Id.ToString()))
+                    {
+                        // Kiểm tra số lượng đã nhập
+                        if (Request.Form.ContainsKey("quantity_" + product.Id))
+                        {
+                            int selectedQuantity;
+                            if (int.TryParse(Request.Form["quantity_" + product.Id], out selectedQuantity))
+                            {
+                                // Kiểm tra số lượng tồn kho
+                                int currentStockQuantity = XuLyProduct.GetQuantityInStock(product.Id);
+
+                                if (selectedQuantity <= currentStockQuantity)
+                                {
+                                    // Nếu số lượng hợp lệ, lưu vào mảng Detail Bill
+                                    DetailBill detail = new DetailBill();
+                                    detail.Id = auId; // Tạo ID cho Detail Bill
+                                    auId++;
+                                    detail.productId = product.Id;
+                                    detail.quantity = selectedQuantity;
+                                    detailBills[detailCount] = detail;
+                                    detailCount++;
+                                }
+                                else
+                                {
+                                    // Nếu số lượng vượt quá tồn kho, cập nhật thông báo lỗi
+                                    isQuantityValid = false;
+                                    answer += $"Số lượng tồn kho của sản phẩm {product.Name} không đủ. ";
+                                }
+                            }
+                            else
+                            {
+                                // Xử lý trường hợp người dùng nhập số lượng không hợp lệ
+                                isQuantityValid = false;
+                                answer += $"Số lượng sản phẩm {product.Name} không hợp lệ. ";
+                            }
+                        }
+                        else
+                        {
+                            // Xử lý trường hợp người dùng không nhập số lượng
+                            isQuantityValid = false;
+                            answer += $"Vui lòng nhập số lượng cho sản phẩm {product.Name}. ";
+                        }
+                    }
+                }
+
+                // Kiểm tra xem số lượng tồn kho có đủ không
+                if (!isQuantityValid)
+                {
+                    // Nếu không đủ, hiển thị thông báo lỗi và không tạo hóa đơn
+                    answer += "Không thể tạo hóa đơn do số lượng tồn kho không đủ.";
+                }
+                else
+                {
+                    // Nếu đủ, tiến hành tạo hóa đơn và cập nhật số lượng tồn kho
+                    ImportBill ImportBill;
+                    ImportBill.Id = masb; // Sử dụng mã hóa đơn mới tạo
+                    ImportBill.CreatedDate = createDate;
+                    ImportBill.detailBillsID = new int[detailCount];
+
+                    for (int i = 0; i < detailCount; i++)
+                    {
+                        ImportBill.detailBillsID[i] = detailBills[i].Id;
+                    }
+
+
+                    int[] detailBillIDs = new int[detailBills.Length];
+
+                    for (int i = 0; i < detailBills.Length; i++)
+                    {
+                        // Thêm ID của DetailBill vào mảng
+                        detailBillIDs[i] = detailBills[i].Id;
+                    }
+
+                    // Cập nhật mảng detailBillsID của ImportBill
+                    ImportBill.detailBillsID = detailBillIDs;
+
+                    // Duyệt qua từng sản phẩm được chọn để tạo bill Detail tương ứng
+                    foreach (var detail in detailBills)
+                    {
+                        // Tạo một bill Detail mới
+                        DetailBill newDetail;
+                        newDetail.Id = XuLyDetail.GenerateDetailBillId(); // Tạo ID cho Detail Bill
+                        newDetail.productId = detail.productId;
+                        newDetail.quantity = detail.quantity;
+
+                        // Thêm bill Detail vào cơ sở dữ liệu
+                        bool detailAdded = XuLyDetail.AddDetailBill(newDetail);
+
+                        if (!detailAdded)
+                        {
+                            // Xử lý trường hợp không thể thêm bill Detail vào cơ sở dữ liệu
+                            answer = "Đã xảy ra lỗi khi tạo bill Detail.";
+                            // Nếu cần, bạn có thể rollback hóa đơn đã tạo ở bước trước
+                        }
+
+                        XuLyProduct.RestockQuantityWhileEditSaleBill(detail.productId, detail.quantity);
+                    }
+
+                    int[] newDetailIDList = ImportBill.detailBillsID.Where(x => x != 0).ToArray();
+
+                    ImportBill? editImport = XuLyImportBill.EditImportBill(masb, createDate, newDetailIDList);
+
+                    if (editImport.HasValue)
+                    {
+                        answer = "Hóa đơn đã được cập nhật thành công.";
+                        HttpContext.Session.SetString("answer", answer);
+                        // Chuyển hướng đến trang hiển thị danh sách Category sau khi sửa thành công
+                        Response.Redirect("MH_ReadImportBill");
+                    }
+
+                    else
+                    {
+                        answer = "Đã xảy ra lỗi khi cập nhật hóa đơn.";
+                    }
+                }
+
+                // Hiển thị thông báo lên giao diện
+
+
+            }
+        }
+
+
+
+    }
+
+}
+
+<div>
+    <form method="post" style="font-family: Arial, sans-serif;">
+
+        <!-- ImportBillId -->
+        <label style="display: block; margin-bottom: 10px;">Import Bill ID:</label>
+        <input type="text" id="ImportBillId" name="masb" value="@masb" readonly>
+        <br>
+        <br />
+
+        <!-- Ngày tạo đơn -->
+        <label style="display: block; margin-bottom: 10px;">Ngày tạo đơn (mm/dd/yyyy):</label>
+        <input type="text" id="createDate" name="createDate" value="@createDate">
+        <br>
+        <br />
+
+
+
+        <!-- Sản Phẩm -->
+        <label style="display: block; margin-bottom: 10px;">Sản Phẩm:</label>
+        @if (dssp2.Length > 0)
+        {
+            foreach (var product in dssp2)
+            {
+                <div style="margin-bottom: 10px;">
+                    <input type="checkbox" id="@("product_" + product.Id)" name="selectedProducts" value="@product.Id" style="margin-right: 5px;">
+                    <label for="@("product_" + product.Id)" style="font-weight: normal;">@product.Name - Giá: @product.Price</label>
+                    <input type="number" id="@("quantity_" + product.Id)" name="@("quantity_" + product.Id)" placeholder="Số lượng" style="margin-left: 10px;">
+                </div>
+            }
+        }
+        else
+        {
+            <option disabled selected>Danh sách Product trống</option>
+        }
+
+        <!-- Submit Button -->
+        <input type="submit" value="Lưu">
+
+    </form>
+    <button onclick="location.href='MH_ReadImportBill'">Hủy</button>
+
+</div>
+
+<!-- Hiển thị thông báo -->
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>

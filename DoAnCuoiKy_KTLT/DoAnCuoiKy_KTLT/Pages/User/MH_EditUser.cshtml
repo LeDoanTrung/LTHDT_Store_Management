@@ -1,0 +1,60 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_EditUserModel
+@using DoAnCuoiKy_KTLT.Entiy;
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu;
+@{
+    string answer = "";
+    string username = string.Empty;
+    string password = string.Empty;
+    string oldUsername = HttpContext.Session.GetString("username");
+
+    if (Request.Method == "POST") //bat buoc phai la POST in hoa
+    {
+        username = Request.Form["username"];
+        password = Request.Form["password"];
+
+        if (string.IsNullOrEmpty(username))
+        {
+            answer = "Username không hợp lệ.";
+        }
+        else if (XuLyUser.IsUsernameExists(username))
+        {
+            answer = "Username đã được sử dụng.";
+        }
+        else if (string.IsNullOrEmpty(password))
+        {
+            answer = "Password không hợp lệ.";
+        }
+
+        if (answer == string.Empty)
+        {
+            User? nd = XuLyUser.EditUser(oldUsername, username, password);
+
+            if (nd.HasValue)
+            {
+                
+                answer = "Dang ky";
+                HttpContext.Session.SetString("username", nd.Value.Name);
+                Response.Redirect("MH_EditThanhCong");
+            }
+            else
+            {
+                answer = "Nguoi dung khong hop le.\nUser Name toi thieu 3 ky tu.\nPassword toi thieu 8 ky tu.";
+            }
+        }
+
+
+    }
+}
+
+
+<form method="post">
+    <label> Nhập User Name Mới:</label><br />
+    <input type="text" id="fname" name="username" value="@username"><br>
+    <label>Nhập Password Mới:</label><br>
+    <input type="password" id="lname" name="password" value="@password"><br><br />
+
+    <input type="submit" value="Lưu">
+</form>
+
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>

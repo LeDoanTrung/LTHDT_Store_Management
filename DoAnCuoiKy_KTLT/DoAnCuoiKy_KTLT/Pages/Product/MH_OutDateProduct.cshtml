@@ -1,0 +1,89 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Product.MH_OutDateProductModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    Product[] productList = XuLyProduct.ReadProductList();
+
+    int productCount = productList.Length;
+
+
+
+
+    // Tạo mảng để lưu trữ các sản phẩm đã hết hạn sử dụng
+    Product[] expiredProducts;
+
+    int count = 0;
+
+    DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+
+    // Lặp qua danh sách sản phẩm và lọc ra các sản phẩm đã hết hạn sử dụng
+    foreach (Product product in productList)
+    {
+
+        if (product.DueDate < today)
+        {
+
+            count += 1;
+        }
+    }
+
+    expiredProducts = new Product[count];
+
+    int j = 0;
+
+    for (int i = 0; i < productList.Length; i++)
+    {
+
+
+        if (productList[i].DueDate < today)
+        {
+            expiredProducts[j] = productList[i];
+            j++;
+        }
+    }
+}
+
+<div class="text-center">
+    <h1 class="display-4">Expired Products</h1>
+</div>
+
+@if (expiredProducts.Length > 0)
+{
+    <div style="position: relative;">
+        <a href="MH_Statistic" style="position: absolute; top: -60px; right: 10px;">
+            <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">View Statistic Products</button>
+        </a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Expiration Date</th>
+                <th>Quantity in Stock</th>
+                <th>Months Overdue</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Product product in expiredProducts)
+            {
+                int monthsApart = (today.Year - product.DueDate.Year) * 12 + (today.Month - product.DueDate.Month);
+                int monthsOverdue = Math.Max(0, monthsApart);
+
+                <tr>
+                    <td style="color: #FF5733; font-weight: bold;">@product.Name</td>
+                    <td>@product.DueDate</td>
+                    <td>@product.Quantity</td>
+                    <td>@(monthsOverdue > 0 ? monthsOverdue : 0)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>No expired products found.</h3>
+}

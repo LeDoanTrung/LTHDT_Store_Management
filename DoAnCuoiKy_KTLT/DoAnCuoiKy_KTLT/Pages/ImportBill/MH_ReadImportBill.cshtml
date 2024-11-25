@@ -1,0 +1,98 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Import_Bill.MH_ReadImportBillModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+
+
+@{
+    string keyword = "";
+
+    ImportBill[] ImportList;
+
+    if (Request.Method == "POST")
+    {
+
+        keyword = Request.Form["sp"];
+
+        ImportList = XuLyImportBill.ReadImportBillList(keyword);
+    }
+    else
+    {
+
+        ImportList = XuLyImportBill.ReadImportBillList();
+    }
+}
+
+<div style="display: flex; justify-content: space-between;">
+    <form method="POST" style="display: inline;">
+        <input type="text" value="@keyword" name="sp" style="display: inline;">
+        <input type="submit" value="Search" style="display: inline;">
+    </form>
+
+    <a href="MH_AddImportBill" style="display: inline-block; margin-left: 10px;">
+        <button>Add New Import Bill</button>
+    </a>
+</div>
+
+
+@if (ImportList != null)
+{
+
+    <div>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Ngày tạo</th>
+                <th>Tên sản phẩm</th>
+                <th>Ngày sản xuất</th>
+                <th>Ngày hết hạn</th>
+                <th>Số lượng</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+
+            @foreach (ImportBill Import in ImportList)
+            {
+                <tr>
+                    <td>@Import.Id</td>
+                    <td>@Import.CreatedDate</td>
+                    <td>
+                        @foreach (int detailId in Import.detailBillsID)
+                        {
+                            var detail = XuLyDetail.SearchDetailBillById(detailId);
+                            var product = XuLyProduct.SearchProductById(detail.Value.productId);
+                            <div>@product.Value.Name</div>
+                        }
+                    </td>
+                    <td>
+                        @foreach (int detailId in Import.detailBillsID)
+                        {
+                            var detail = XuLyDetail.SearchDetailBillById(detailId);
+                            var product = XuLyProduct.SearchProductById(detail.Value.productId);
+                            <div>@product.Value.DateManufacrure</div>
+                        }
+                    </td>
+                    <td>
+                        @foreach (int detailId in Import.detailBillsID)
+                        {
+                            var detail = XuLyDetail.SearchDetailBillById(detailId);
+                            var product = XuLyProduct.SearchProductById(detail.Value.productId);
+                            <div>@product.Value.DueDate</div>
+                        }
+                    </td>
+                    <td>
+                        @foreach (int detailId in Import.detailBillsID)
+                        {
+                            var detail = XuLyDetail.SearchDetailBillById(detailId);
+                            <div>@detail.Value.quantity</div>
+                        }
+                    </td>
+                   
+                    <td><a href="MH_EditImportBill?masb=@Import.Id">Sửa</a></td>
+                    <td><a href="MH_DeleteImportBill?masb=@Import.Id">Xóa</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}

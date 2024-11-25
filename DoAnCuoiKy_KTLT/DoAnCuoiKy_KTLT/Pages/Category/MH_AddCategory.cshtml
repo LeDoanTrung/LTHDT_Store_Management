@@ -1,0 +1,58 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Category.MH_AddCategoryModel
+@using DoAnCuoiKy_KTLT.Entiy;
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu;
+
+@{
+    string answer = "";
+    HttpContext.Session.Remove("answer");
+    Category[] dsLoaiHang = XuLyCategory.ReadCategoryList();
+
+    int maLoaiHang = XuLyCategory.GenerateCategoryId();
+    string tenLoaiHang = string.Empty;
+
+    if (Request.Method == "POST") //bat buoc phai la POST in hoa
+    {
+       
+
+        tenLoaiHang = Request.Form["name"];
+        if (string.IsNullOrEmpty(tenLoaiHang))
+        {
+            answer += "Tên loại hàng không được để trống.";
+        }
+
+        else if (XuLyCategory.IsCategoryExist(maLoaiHang, tenLoaiHang))
+        {
+            answer = "Mã loại hàng hoặc tên loại hàng đã tồn tại. Vui lòng nhập mã hoặc tên khác.";
+        }
+
+        if (answer == string.Empty)
+        {
+            Category? loaiHang = XuLyCategory.CreateCategory(maLoaiHang, tenLoaiHang);
+            if (loaiHang.HasValue)
+            {
+                XuLyCategory.AddCategory(loaiHang.Value);
+                answer = "Lưu trữ thành công";
+                HttpContext.Session.SetString("answer", answer);
+                Response.Redirect("MH_ReadCategory");
+            }
+            else
+            {
+                answer = "Loại hàng không hợp lệ";
+            }
+        }
+    }
+}
+<div>
+    <form method="post">
+        <label>Nhập tên loại hàng:</label><br>
+        <input type="text" id="name" name="name" value=""><br><br />
+
+        <input type="submit" value="Lưu">
+    </form>
+    <button onclick="location.href='MH_ReadCategory'">Hủy</button>
+</div>
+
+
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>
+

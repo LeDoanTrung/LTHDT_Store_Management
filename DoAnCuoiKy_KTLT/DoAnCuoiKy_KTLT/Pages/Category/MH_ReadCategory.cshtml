@@ -1,0 +1,57 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Category.MH_DocLoaiHangModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string keyword = "";
+    
+    
+    Category[] categories;
+
+    if (Request.Method == "POST")
+    {
+        keyword = Request.Form["category"];
+        categories = XuLyCategory.ReadCategoryList(keyword);
+    }
+    else
+    {
+        categories = XuLyCategory.ReadCategoryList();
+    }
+
+    
+}
+
+<div style="display: flex; justify-content: space-between;">
+    <form method="POST" style="display: inline;">
+        <input type="text" value="@keyword" name="category" style="display: inline;">
+        <input type="submit" value="Search" style="display: inline;">
+    </form>
+
+    <a href="MH_AddCategory" style="display: inline-block; margin-left: 10px;">
+        <button>Add New Category</button>
+    </a>
+</div>
+
+
+@if (categories != null)
+{
+    <div>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var category in categories)
+            {
+                <tr>
+                    <td>@category.Id</td>
+                    <td>@category.Name</td>  
+                    <td><a href="MH_EditCategory?malh=@category.Id">Sửa</a></td>
+                    <td><a href="MH_DeleteCategory?malh=@category.Id">Xóa</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}

@@ -1,0 +1,204 @@
+﻿@{
+    string username = Context.Session.GetString("username");
+
+    string answer = Context.Session.GetString("answer");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DoAnCuoiKy_KTLT</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoAnCuoiKy_KTLT.styles.css" asp-append-version="true" />
+</head>
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+    .notification {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-link {
+        text-decoration: none;  
+        color: #333; 
+        transition: transform 0.3s ease; 
+    }
+
+         
+        .auth-link:hover {
+            font-size: 1.1em;
+            color: #555; 
+        }
+
+
+    .nav-item {
+
+        text-decoration: none;
+        color: #333;
+        transition: transform 0.3s ease;
+    }
+
+
+        .nav-item :hover {
+            font-size: 1.1em;
+            color: #555;
+            font-weight: bold;
+        }
+
+    .register {
+        font-weight: bold;  
+    }
+
+    .logout {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    .login {
+        font-style: italic;  
+    }
+
+    .notification {
+        font-size: 20px;  
+        font-weight: bold;  
+        text-align: center;  
+        padding: 20px;  
+        background-color: #f0f0f0;  
+        border: 1px solid #ccc;  
+        border-radius: 5px;  
+        margin-top: 50px;  
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: row;
+    }
+
+        .action-buttons .auth-link {
+            margin-right: 10px; 
+        }
+
+  
+</style>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">DoAnCuoiKy_KTLT</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Product/MH_DocSanPham">Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Category/MH_ReadCategory">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Product/MH_Statistic">Statistics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/SaleBill/MH_ReadSaleBill">Sale Bill</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ImportBill/MH_ReadImportBill">Import Bill</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    @if (string.IsNullOrEmpty(username))
+                    {
+                        <a class="auth-link register" href="/User/MH_DangKy">Register</a>
+                        <a class="auth-link login" href="/User/MH_DangNhap">Login</a>
+                    }
+                    else
+                    {
+                        <div class="user-info">
+                            <div>
+                                <span>Hello @username</span>
+                            </div>
+                            <div class="action-buttons">
+                                <a class="auth-link edit" href="/User/MH_CheckUser">Edit</a>
+                                <a class="auth-link logout" href="/User/MH_DangXuat">Logout</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="notification">
+            @if (!string.IsNullOrEmpty(answer))
+            {
+                <span> @answer</span>
+            }
+            
+        </div>
+    
+    </header>
+    @await RenderSectionAsync("TOP", required: false)
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - DoAnCuoiKy_KTLT - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @await RenderSectionAsync("ABC", required: false)
+</body>
+</html>
+
+

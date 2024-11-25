@@ -1,0 +1,82 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Import_Bill.MH_DeleteImportBillModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Entity
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+
+    ImportBill[] ImportList = XuLyImportBill.ReadImportBillList();
+
+    int masb = 0;
+
+    if (!int.TryParse(Request.Query["masb"], out masb))
+    {
+        answer = "Invalid Import bill ID";
+    }
+
+    if (answer == string.Empty)
+    {
+        if (Request.Method == "GET")
+        {
+
+
+            ImportBill? p = XuLyImportBill.SearchImportBillById(masb);
+
+            if (p.HasValue)
+            {
+
+                answer = $"Are you sure to delete this Import Bill ?";
+            }
+            else
+            {
+                answer = "Can not find any Import Bill!";
+            }
+        }
+
+
+        else if (Request.Method == "POST")
+        {
+            ImportBill? currentBill = XuLyImportBill.SearchImportBillById(masb);
+
+            if (currentBill.HasValue)
+            {
+                int[] detailIDcurrent = currentBill.Value.detailBillsID;
+
+                for (int i = 0; i < detailIDcurrent.Length; i++)
+                {
+                    DetailBill? detail = XuLyDetail.SearchDetailBillById(detailIDcurrent[i]);
+
+                    XuLyDetail.DeleteDetailBillInImport(detail.Value.Id);
+
+                }
+            }
+            else
+            {
+                answer += "Xảy ra lỗi trong quá trình xóa Import Bill";
+            }
+
+            XuLyImportBill.DeleteImportBill(masb);
+            answer = "Import Bill has been deleted successfully!";
+            HttpContext.Session.SetString("answer", answer);
+            Response.Redirect("MH_ReadImportBill");
+        }
+    }
+}
+
+<div class="notification">
+    @answer
+</div>
+
+
+@if (masb > 0)
+{
+    <div>
+        <form method="POST">
+            <input type="submit" value="Yes"></input>
+        </form>
+        <button onclick="location.href='MH_ReadImportBill'">Cancel</button>
+    </div>
+}
+

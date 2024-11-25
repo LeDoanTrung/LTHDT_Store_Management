@@ -1,0 +1,80 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Category.MH_DeleteCategoryModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    HttpContext.Session.Remove("answer");
+    Category[] cateList = XuLyCategory.ReadCategoryList();
+
+    int malh = 0;
+    string tenlh = string.Empty;
+
+
+    if (!int.TryParse(Request.Query["malh"], out malh))
+    {
+        answer = "Invalid Category ID";
+    }
+
+    if (answer == string.Empty)
+    {
+        if (Request.Method == "GET")
+        {
+            Category? p = XuLyCategory.SearchCategoryById(malh);
+
+            if (p.HasValue)
+            {
+                // Kiểm tra xem category đang được sử dụng bởi các sản phẩm hay không
+                Product[] productsUsingCategory = XuLyProduct.GetProductsByCategoryId(malh);
+
+                if (productsUsingCategory.Length > 0)
+                {
+                    // Nếu có sản phẩm sử dụng category này, hiển thị thông báo không thể xóa
+                    string productList = string.Join(", ", productsUsingCategory.Select(product => product.Name));
+                    answer = $"Cannot delete this Category because it is linked to the following Products: {productList}";
+                }
+                else
+                {
+                    // Nếu không có sản phẩm sử dụng category này, hiển thị thông báo xác nhận xóa
+                    answer = $"Are you sure to delete the Category \"{p.Value.Name}\"?";
+                }
+            }
+            else
+            {
+                answer = "Can not find any Category!";
+            }
+        }
+        else if (Request.Method == "POST")
+        {
+            XuLyCategory.DeleteCategory(malh);
+            answer = "Category has been deleted successfully!";
+            HttpContext.Session.SetString("answer", answer);
+            Response.Redirect("MH_ReadCategory");
+        }
+    }
+}
+
+<div class="notification">
+    @answer
+</div>
+
+@if (malh > 0 && answer.StartsWith("Are you sure"))
+{
+    <div>
+        <form method="POST">
+            <input type="submit" value="Yes">
+           
+        </form>
+        <button onclick="location.href='MH_ReadCategory' ">Cancel</button>
+    </div>
+}
+
+@if (malh > 0 && answer.StartsWith("Cannot delete"))
+{
+    <div>
+        <p>Please delete the following Product first if you want to delete this Category!</p>
+        <button onclick="location.href='/Product/MH_DocSanPham'">Go to Product List</button>
+        <button onclick="location.href='MH_ReadCategory'" style="margin-left: 10px;">Go back to Category List</button>
+    </div>
+}

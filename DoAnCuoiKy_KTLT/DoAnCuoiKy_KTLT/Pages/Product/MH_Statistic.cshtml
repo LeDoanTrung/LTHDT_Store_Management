@@ -1,0 +1,114 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Product.MH_StatisticModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Entity
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    Product[] productList = XuLyProduct.ReadProductList();
+    int productCount = productList.Length;
+
+    // Tạo mảng để lưu trữ các nhóm sản phẩm
+    Product[][] groupedProducts = new Product[productCount][];
+
+    // Biến đếm số lượng nhóm sản phẩm
+    int groupCount = 0;
+
+    // Duyệt qua danh sách sản phẩm ban đầu để gom nhóm
+    foreach (var product in productList)
+    {
+        bool foundGroup = false;
+
+        // Duyệt qua các nhóm đã tạo
+        for (int i = 0; i < groupCount; i++)
+        {
+            // Kiểm tra xem sản phẩm có thể thêm vào nhóm hiện tại không
+            if (groupedProducts[i][0].Name == product.Name &&
+                groupedProducts[i][0].CompName == product.CompName &&
+                groupedProducts[i][0].Price == product.Price)
+            {
+                // Tạo một mảng mới có kích thước lớn hơn để chứa sản phẩm mới
+                Product[] newGroup = new Product[groupedProducts[i].Length + 1];
+
+                // Sao chép dữ liệu từ mảng cũ sang mảng mới bằng vòng lặp
+                for (int j = 0; j < groupedProducts[i].Length; j++)
+                {
+                    newGroup[j] = groupedProducts[i][j];
+                }
+
+                // Thêm sản phẩm mới vào nhóm
+                newGroup[groupedProducts[i].Length] = product;
+
+                // Ghi đè mảng cũ bằng mảng mới
+                groupedProducts[i] = newGroup;
+
+                foundGroup = true;
+                break;
+            }
+        }
+
+        // Nếu không tìm thấy nhóm phù hợp, tạo một nhóm mới
+        if (!foundGroup)
+        {
+            groupedProducts[groupCount] = new Product[] { product };
+            groupCount++;
+        }
+    }
+}
+
+<div class="text-center">
+    <h1 class="display-4">Product Inventory Statistics</h1>
+</div>
+
+@if (groupCount > 0)
+{
+
+    <div style="position: relative;">
+        <a href="MH_OutDateProduct" style="position: absolute; top: -60px; right: 10px;">
+            <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">View Outdated Products</button>
+        </a>
+    </div>
+
+    @for (int i = 0; i < groupCount; i++)
+    {
+        int totalQuantity = 0;
+
+        <h3 style="font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; color: #ff5733;">@groupedProducts[i][0].Name</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>Manufacturing Date</th>
+                    <th>Expiration Date</th>
+                    <th>Quantity in Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in groupedProducts[i])
+                {
+                    <tr>
+
+                        <td>@product.DateManufacrure</td>
+                        <td>@product.DueDate</td>
+                        <td>@product.Quantity</td>
+                    </tr>
+
+                    totalQuantity += product.Quantity;
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td style="font-weight: bold;" >Total Quantity: @totalQuantity</td>
+                    
+                </tr>
+            </tfoot>
+        </table>
+    }
+}
+else
+{
+    <h3>No products found.</h3>
+}

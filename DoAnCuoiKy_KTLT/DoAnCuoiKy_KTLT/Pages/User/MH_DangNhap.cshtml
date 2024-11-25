@@ -1,0 +1,58 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_DangNhapModel
+@using DoAnCuoiKy_KTLT.Entiy;
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu;
+@{
+    string answer = "";
+    string username = string.Empty;
+    string password = string.Empty;
+
+    if (Request.Method == "POST") //bat buoc phai la POST in hoa
+    {
+        username = Request.Form["username"];
+
+        if (string.IsNullOrEmpty(username))
+        {
+            answer = "Username khong hop le.";
+        }
+
+        password = Request.Form["password"];
+
+        if (string.IsNullOrEmpty(password))
+        {
+            answer += "Password khong hop le.";
+        }
+
+
+        if (answer == string.Empty)
+        {
+            User? nd = XuLyUser.Login(username, password);
+
+            if (nd.HasValue)
+            {
+                HttpContext.Session.SetString("username", nd.Value.Name);
+                answer = "Đăng Nhập Thành Công";
+                Response.Redirect("/Category/MH_ReadCategory");
+            }
+            else
+            {
+                answer = "Người dùng không hợp lệ";
+            }
+        }
+
+
+    }
+}
+
+
+<form method="post">
+    <label> Nhập User Name:</label><br />
+    <input type="text" id="fname" name="username" value="@username"><br>
+    <label>Nhập Password:</label><br>
+    <input type="password" id="lname" name="password" value="@password"><br><br />
+
+    <input type="submit" value="Đăng Nhập">
+
+</form>
+
+<p>@answer</p>

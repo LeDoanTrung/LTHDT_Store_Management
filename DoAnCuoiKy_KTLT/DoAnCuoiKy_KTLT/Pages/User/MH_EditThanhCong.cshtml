@@ -1,0 +1,17 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_EditThanhCongModel
+@{
+
+    if (Request.Method == "POST")
+    {
+        Response.Redirect("/Product/MH_DocSanPham");
+    }
+}
+
+<h1>
+    Congratulations! You have updated your account successfully!
+</h1>
+
+<form method="post">
+    <button type="submit">Go to Home Page</button>
+</form>

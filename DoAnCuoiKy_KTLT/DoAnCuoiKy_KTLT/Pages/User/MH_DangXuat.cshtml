@@ -1,0 +1,20 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_DangXuatModel
+@{
+
+    if (Request.Method == "POST")
+    {
+        HttpContext.Session.Remove("username");
+        Response.Redirect("/Category/MH_ReadCategory");
+    }
+}
+
+<h1>
+    Are you sure to log out this account?
+</h1>
+
+<form method="post">
+
+    <button type="submit">Yes</button>
+    <button type="button" onclick="location.href='/Category/MH_ReadCategory'">No</button>
+</form>

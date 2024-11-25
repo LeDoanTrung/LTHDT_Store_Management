@@ -1,0 +1,6 @@
+5
+1;Điện tử
+2;Quần áo Nam
+3;Quần Áo Nữ
+4;Thực phẩm
+5;Đồ uống có cồn

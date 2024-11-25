@@ -1,0 +1,91 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Category.MH_EditCategoryModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    HttpContext.Session.Remove("answer");
+    int malh = 0;
+    string categoryName = string.Empty;
+    Category[] cateList = XuLyCategory.ReadCategoryList();
+
+    // Kiểm tra xem Request có chứa thông tin của Category cần sửa không
+    if (!int.TryParse(Request.Query["malh"], out malh))
+    {
+        answer = "ID danh mục không hợp lệ.";
+    }
+
+    if (Request.Method == "GET")
+    {
+        if (answer == string.Empty)
+        {
+            // Gọi phương thức tìm kiếm Category theo ID từ lớp xử lý nghiệp vụ
+            Category? category = XuLyCategory.SearchCategoryById(malh);
+
+            if (category.HasValue)
+            {
+                categoryName = category.Value.Name;
+
+            }
+            else
+            {
+                answer = "Không tìm thấy danh mục tương ứng.";
+            }
+        }
+    }
+    else if (Request.Method == "POST")
+    {
+        categoryName = Request.Form["categoryName"];
+
+        if (string.IsNullOrEmpty(categoryName))
+        {
+            answer += "Tên danh mục không hợp lệ. ";
+        }
+        else
+        {
+            // Kiểm tra xem tên danh mục đã tồn tại hay không
+            foreach (var category in cateList)
+            {
+                if (category.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase) && category.Id != malh)
+                {
+                    answer += "Tên danh mục đã tồn tại. ";
+                    break;
+                }
+            }
+        }
+
+        if (answer == string.Empty)
+        {
+            // Gọi phương thức sửa Category từ lớp xử lý nghiệp vụ
+            Category? cate = XuLyCategory.EditCategory(malh, categoryName);
+
+            if (cate.HasValue)
+            {
+                answer = "Sửa danh mục thành công";
+                HttpContext.Session.SetString("answer", answer);
+                // Chuyển hướng đến trang hiển thị danh sách Category sau khi sửa thành công
+                Response.Redirect("MH_ReadCategory");
+            }
+            else
+            {
+                answer = "Sửa danh mục không thành công.";
+            }
+        }
+    }
+}
+<div>
+    <form method="post">
+        <label>Id:</label><br>
+        <input type="text" id="lname" name="categoryId" value="@malh" readonly disabled><br><br />
+        <label>Nhập tên danh mục:</label><br>
+        <input type="text" id="lname" name="categoryName" value="@categoryName"><br><br />
+
+        <input type="submit" value="Lưu">
+        
+    </form>
+    <button onclick="location.href='MH_ReadCategory'">Hủy</button>
+</div>
+
+
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>

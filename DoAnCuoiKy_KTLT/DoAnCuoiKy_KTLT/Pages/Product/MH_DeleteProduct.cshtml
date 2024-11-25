@@ -1,0 +1,66 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Product.MH_DeleteProductModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    
+    Product [] dssp = XuLyProduct.ReadProductList();
+
+    int masp = 0;
+    string tensp = string.Empty;
+
+
+    if (!int.TryParse(Request.Query["masp"], out masp))
+    {
+        answer = "Invalid Product ID";
+    }
+
+    if (answer == string.Empty)
+    {
+        if (Request.Method == "GET")
+        {
+
+
+            Product? p = XuLyProduct.SearchProductById(masp);
+
+            if (p.HasValue)
+            {
+
+                answer = $"Are you sure to delete the Product \"{p.Value.Name}\"?";
+            }
+            else
+            {
+                answer = "Can not find any product!";
+            }
+        }
+
+
+        else if (Request.Method == "POST")
+        {
+            XuLyProduct.DeleteProduct(masp);
+            answer = "Product has been deleted successfully!";
+            HttpContext.Session.SetString("answer", answer);
+            Response.Redirect("MH_DocSanPham");
+        }
+    }
+
+
+}
+
+<div class="notification">
+    @answer
+</div>
+
+
+@if (masp > 0)
+{
+    <div>
+        <form method="POST">
+            <input type="submit" value="Yes"></input>
+        </form>
+        <button onclick="location.href='MH_DocSanPham'">Hủy</button>
+    </div>
+}
+

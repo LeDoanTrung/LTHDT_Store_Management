@@ -1,0 +1,81 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.SaleBill.MH_DeleteSaleBillModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Entity
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+
+    SaleBill[] saleList = XuLySaleBill.ReadSaleBillList();
+
+    int masb = 0;
+
+    if (!int.TryParse(Request.Query["masb"], out masb))
+    {
+        answer = "Invalid Sale bill ID";
+    }
+
+    if (answer == string.Empty)
+    {
+        if (Request.Method == "GET")
+        {
+
+
+            SaleBill? p = XuLySaleBill.SearchSaleBillById(masb);
+
+            if (p.HasValue)
+            {
+
+                answer = $"Are you sure to delete this Sale Bill ?";
+            }
+            else
+            {
+                answer = "Can not find any Sale Bill!";
+            }
+        }
+
+
+        else if (Request.Method == "POST")
+        {
+            SaleBill? currentBill = XuLySaleBill.SearchSaleBillById(masb);
+
+            if (currentBill.HasValue)
+            {
+                int[] detailIDcurrent = currentBill.Value.detailBillsID;
+
+                for (int i = 0; i < detailIDcurrent.Length; i++)
+                {
+                    DetailBill? detail = XuLyDetail.SearchDetailBillById(detailIDcurrent[i]);
+
+                    XuLyDetail.DeleteDetailBillInSale(detail.Value.Id);
+
+                }
+            }
+            else
+            {
+                answer += "Xảy ra lỗi trong quá trình xóa Sale Bill";
+            }
+
+            XuLySaleBill.DeleteSaleBill(masb);
+            answer = "Sale Bill has been deleted successfully!";
+            HttpContext.Session.SetString("answer", answer);
+            Response.Redirect("MH_ReadSaleBill");
+        }
+    }
+}
+
+<div class="notification">
+    @answer
+</div>
+
+
+@if (masb > 0)
+{
+    <div>
+        <form method="POST">
+            <input type="submit" value="Yes"></input>
+        </form>
+        <button onclick="location.href='MH_ReadSaleBill'">Cancel</button>
+    </div>
+}

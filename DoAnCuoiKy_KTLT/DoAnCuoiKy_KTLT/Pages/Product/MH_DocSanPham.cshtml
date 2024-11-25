@@ -1,0 +1,74 @@
+﻿@page
+@model MH_DocSanPhamModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+
+@{
+    string keyword = string.Empty;
+    
+    Product[] products;
+
+    if (Request.Method == "POST")
+    {
+        keyword = Request.Form["sp"];
+        products = XuLyProduct.ReadProductList(keyword);
+    }
+    else
+    {
+        products = XuLyProduct.ReadProductList();
+    }
+}
+
+<div style="display: flex; justify-content: space-between;">
+<form method="POST" style="display: inline;">
+    <input type="text" value="@keyword" name="sp" style="display: inline;">
+        <input type="submit" value="Search" style="display: inline;">
+</form>
+
+    <a href="MH_Statistic" style="display: inline-block; margin-left: 10px;">
+        <button>Statistic Products</button>
+    </a>
+
+<a href="MH_AddProduct" style="display: inline-block; margin-left: 10px;">
+    <button>Add New Product</button>
+</a>
+</div>
+
+
+@if (products != null)
+{
+    <div>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Tên</th>
+                <th>Hạn Dùng</th>
+                <th>Công Ty Sản Xuất</th>
+                <th>Ngày Sản Xuất</th>
+                <th>Loại Hàng</th>
+                <th>Giá</th>
+                
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            @foreach (var product in products)
+            {
+                Category? cate = XuLyCategory.SearchCategoryById(product.CateId);
+
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.DueDate</td>
+                    <td>@product.CompName</td>
+                    <td>@product.DateManufacrure</td>
+                    <td>@cate.Value.Name</td>
+                    <td>@product.Price</td>
+                    
+                    <td><a href="MH_EditProduct?masp=@product.Id">Sửa</a></td>
+                    <td><a href="MH_DeleteProduct?masp=@product.Id">Xóa</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+}

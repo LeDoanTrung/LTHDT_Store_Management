@@ -1,0 +1,17 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_ThanhCongModel
+@{
+
+    if (Request.Method == "POST")
+    {
+        Response.Redirect("MH_DangNhap");
+    }
+}
+
+<h1>
+    Congratulations! You have registered successfully!
+</h1>
+
+<form method="post" >
+    <button type="submit">Log in</button>
+</form>

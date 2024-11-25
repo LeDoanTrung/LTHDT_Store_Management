@@ -1,0 +1,147 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DoAnCuoiKy_KTLT
+build_property.RootNamespace = DoAnCuoiKy_KTLT
+build_property.ProjectDir = C:\Users\ADMIN\source\repos\DoAnCuoiKy_KTLT\DoAnCuoiKy_KTLT\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\ADMIN\source\repos\DoAnCuoiKy_KTLT\DoAnCuoiKy_KTLT
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Category/MH_AddCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcnlcTUhfQWRkQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Category/MH_DeleteCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcnlcTUhfRGVsZXRlQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Category/MH_EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcnlcTUhfRWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Category/MH_ReadCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcnlcTUhfUmVhZENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/ImportBill/MH_AddImportBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW1wb3J0QmlsbFxNSF9BZGRJbXBvcnRCaWxsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/ImportBill/MH_DeleteImportBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW1wb3J0QmlsbFxNSF9EZWxldGVJbXBvcnRCaWxsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/ImportBill/MH_EditImportBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW1wb3J0QmlsbFxNSF9FZGl0SW1wb3J0QmlsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/ImportBill/MH_ReadImportBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW1wb3J0QmlsbFxNSF9SZWFkSW1wb3J0QmlsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_AddProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9BZGRQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_DeleteProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9EZWxldGVQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_DocSanPham.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9Eb2NTYW5QaGFtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_EditProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9FZGl0UHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_OutDateProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9PdXREYXRlUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Product/MH_Statistic.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFxNSF9TdGF0aXN0aWMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/SaleBill/MH_AddSaleBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZUJpbGxcTUhfQWRkU2FsZUJpbGwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/SaleBill/MH_DeleteSaleBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZUJpbGxcTUhfRGVsZXRlU2FsZUJpbGwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/SaleBill/MH_EditSaleBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZUJpbGxcTUhfRWRpdFNhbGVCaWxsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/SaleBill/MH_ReadSaleBill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZUJpbGxcTUhfUmVhZFNhbGVCaWxsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_CheckUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9DaGVja1VzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_DangKy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9EYW5nS3kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_DangNhap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9EYW5nTmhhcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_DangXuat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9EYW5nWHVhdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_EditThanhCong.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9FZGl0VGhhbmhDb25nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9FZGl0VXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/User/MH_ThanhCong.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxNSF9UaGFuaENvbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ADMIN/source/repos/DoAnCuoiKy_KTLT/DoAnCuoiKy_KTLT/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-sn4h2k0id4

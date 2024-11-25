@@ -1,0 +1,157 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.Product.MH_AddProductModel
+@using DoAnCuoiKy_KTLT.Entiy;
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu;
+@{
+    string answer = "";
+    HttpContext.Session.Remove("answer");
+
+    Product[] dssp = XuLyProduct.ReadProductList();
+
+    int masp = XuLyProduct.GenerateProductId();
+    string tensp = string.Empty;
+    int gia = 0;
+    string compName = string.Empty;
+    DateOnly dueDate = DateOnly.MinValue;
+    DateOnly dateManufacture = DateOnly.MinValue;
+    int cateId = 0;
+   
+
+    DateTime today = DateTime.Today;
+    DateOnly currentDate = new DateOnly(today.Year, today.Month, today.Day);
+
+    Category[] categories = XuLyCategory.ReadCategoryList();
+
+    if (Request.Method == "POST") //bat buoc phai la POST in hoa
+    {
+       
+        tensp = Request.Form["name"];
+        compName = Request.Form["compName"];
+        
+        if (string.IsNullOrEmpty(tensp))
+        {
+            answer += "Tên sản phẩm không hợp lệ. ";
+        }
+
+        if (!int.TryParse(Request.Form["gia"], out gia))
+        {
+            answer += "Giá sản phẩm không hợp lệ. ";
+        }
+
+        if (!DateOnly.TryParse(Request.Form["dueDate"], out dueDate))
+        {
+            answer += "Ngày hết hạn không hợp lệ. ";
+        }
+
+        if (!DateOnly.TryParse(Request.Form["dateManufacture"], out dateManufacture))
+        {
+            answer += "Ngày sản xuất không hợp lệ. ";
+        }
+
+        // Kiểm tra ngày hết hạn phải lớn hơn ngày sản xuất
+        if (dueDate <= dateManufacture)
+        {
+            answer += "Ngày hết hạn phải sau ngày sản xuất. ";
+        }
+
+        // Kiểm tra ngày sản xuất không được lớn hơn ngày hiện tại
+        if (dateManufacture >= currentDate)
+        {
+            answer += "Ngày sản xuất không được lớn hơn ngày hiện tại. ";
+        }
+
+        if (string.IsNullOrEmpty(compName))
+        {
+            answer += "Tên công ty sản xuất không hợp lệ. ";
+        }
+
+        // Kiểm tra CategoryName
+      
+        if (!int.TryParse(Request.Form["cateId"], out cateId))
+        {
+            answer += "Tên danh mục không hợp lệ. ";
+        }
+        else
+        {
+            // Kiểm tra xem tên danh mục có tồn tại không
+            Category? category = XuLyCategory.SearchCategoryById(cateId);
+            if (category == null)
+            {
+                answer += "Tên danh mục không tồn tại trong hệ thống. ";
+            }
+        }
+
+        
+
+
+        if (answer == string.Empty)
+        {
+
+            Product? existingProduct = XuLyProduct.SearchProduct(tensp, dueDate, compName, dateManufacture, cateId, gia);
+            if (existingProduct.HasValue)
+            {
+                // Sản phẩm đã tồn tại, xuất ra cảnh báo
+                answer = "Sản phẩm đã tồn tại trong hệ thống.";
+            }
+            else
+            {
+                // Sản phẩm không tồn tại, tiếp tục quá trình lưu trữ
+                Product? sp = XuLyProduct.CreateProduct(masp, tensp, dueDate, compName, dateManufacture, cateId, gia);
+
+                if (sp.HasValue)
+                {
+                    XuLyProduct.AddProduct(sp.Value);
+                    answer = "Lưu trữ thành công";
+                    HttpContext.Session.SetString("answer", answer);
+                    Response.Redirect("MH_DocSanPham");
+                }
+                else
+                {
+                    answer = "Sản phẩm không hợp lệ. Lưu trữ không thành công!";
+                }
+            }
+        }
+    }
+}
+
+
+<div>
+    <form method="post">
+
+        <label>Nhập tên sản phẩm:</label><br>
+        <input type="text" id="name" name="name" value=""><br><br />
+        <label>Ngày hết hạn (mm/dd/yyyy):</label><br>
+        <input type="text" id="dueDate" name="dueDate" value=""><br><br />
+        <label>Nhập tên công ty:</label><br>
+        <input type="text" id="compName" name="compName" value=""><br><br />
+        <label>Ngày sản xuất (mm/dd/yyyy):</label><br>
+        <input type="text" id="dateManufacture" name="dateManufacture" value=""><br><br />
+
+        <label>Loại hàng:</label><br>
+        <select id="cateId" name="cateId">
+            @if (categories.Length > 0)
+            {
+                foreach (var category in categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            }
+            else
+            {
+                <option disabled selected>Danh sách Category trống</option>
+            }
+        </select><br><br />
+
+
+
+        <label>Nhập giá sản phẩm:</label><br>
+        <input type="text" id="gia" name="gia" value=""><br><br />
+        
+
+        <input type="submit" value="Lưu">
+    </form>
+    <button onclick="location.href='MH_DocSanPham'">Hủy</button>
+</div>
+
+
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>

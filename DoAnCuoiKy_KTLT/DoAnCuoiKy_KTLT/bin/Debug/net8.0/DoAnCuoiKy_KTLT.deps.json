@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "DoAnCuoiKy_KTLT/1.0.0": {
+        "runtime": {
+          "DoAnCuoiKy_KTLT.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DoAnCuoiKy_KTLT/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model DoAnCuoiKy_KTLT.Pages.User.MH_CheckUserModel
+@using DoAnCuoiKy_KTLT.Entiy
+@using DoAnCuoiKy_KTLT.Pages
+@using DoAnCuoiKy_KTLT.XuLyNghiepVu
+@{
+    string answer = "";
+    if (Request.Method == "POST")
+    {
+        string enteredPassword = Request.Form["password"];
+
+        string username = HttpContext.Session.GetString("username");
+
+        User? user = XuLyUser.SearchUserByName(username);
+
+        if (user.HasValue)
+        {
+            // Kiểm tra mật khẩu
+            bool isPasswordCorrect = XuLyUser.CheckPassword(username, enteredPassword);
+
+            if (isPasswordCorrect)
+            {
+                // Chuyển hướng đến trang chỉnh sửa thông tin người dùng
+                Response.Redirect("MH_EditUser");
+            }
+            else
+            {
+                answer = "Incorrect password!";
+            }
+        }
+
+        else
+        {
+            answer = "Không Tìm Thấy User";
+        }
+
+    }
+}
+<form method="post">
+    <label for="password">Enter your password correctly to edit your account:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Confirm</button>
+</form>
+
+<h3 style="font-family: Arial, sans-serif; color: #333; font-weight: bold;">@answer</h3>
