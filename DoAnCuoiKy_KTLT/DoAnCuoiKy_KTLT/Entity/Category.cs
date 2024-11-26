@@ -1,9 +1,14 @@
 ﻿namespace DoAnCuoiKy_KTLT.Entiy
 {
-    public struct Category
+    public class Category
     {
-        public int Id;
-        public string Name;
-       
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public Category(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

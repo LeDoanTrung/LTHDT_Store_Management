@@ -2,10 +2,10 @@
 
 namespace DoAnCuoiKy_KTLT.Entiy
 {
-    public struct SaleBill
+    public class SaleBill : Bill
     {
-        public int Id;
-        public DateOnly CreatedDate;
-        public int[] detailBillsID;
+        public SaleBill(int id, DateOnly createdDate, int[] detailBillsID)
+            : base(id, createdDate, detailBillsID)
+        {}
     }
 }
