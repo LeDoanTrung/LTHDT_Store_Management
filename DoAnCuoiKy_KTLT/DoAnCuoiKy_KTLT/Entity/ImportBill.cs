@@ -2,10 +2,10 @@
 
 namespace DoAnCuoiKy_KTLT.Entiy
 {
-    public struct ImportBill
+    public class ImportBill : Bill
     {
-        public int Id;
-        public DateOnly CreatedDate;
-        public int[] detailBillsID;
+        public ImportBill(int id, DateOnly createdDate, int[] detailBillsID)
+            : base(id, createdDate, detailBillsID)
+        {}
     }
 }
