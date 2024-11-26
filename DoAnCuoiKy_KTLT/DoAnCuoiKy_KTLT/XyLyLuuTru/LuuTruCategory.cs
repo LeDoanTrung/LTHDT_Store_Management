@@ -18,8 +18,7 @@ namespace DoAnCuoiKy_KTLT.XyLyLuuTru
             for (int i = 0; i < numCategories; i++)
             {
                 string[] categoryInfo = file.ReadLine().Split(';');
-                categories[i].Id = int.Parse(categoryInfo[0]);
-                categories[i].Name = categoryInfo[1];
+                categories[i] = new Category(int.Parse(categoryInfo[0]), categoryInfo[1])
             }
 
             file.Close();
@@ -104,10 +103,9 @@ namespace DoAnCuoiKy_KTLT.XyLyLuuTru
             {
                 if (categories[i].Id == cate.Id)
                 {
-                    categories[i] = cate;
-
+                    categories[i].Name = cate.Name;
                     SaveNewListToDB(categories);
-                    return cate;
+                    return categories[i];
                 }
             }
 

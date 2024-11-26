@@ -19,9 +19,12 @@ namespace DoAnCuoiKy_KTLT.XyLyLuuTru
             for (int i = 0; i < num; i++)
             {
                 string[] categoryInfo = file.ReadLine().Split(';');
-                list[i].Id = int.Parse(categoryInfo[0]);
-                list[i].productId = int.Parse(categoryInfo[1]);
-                list[i].quantity = int.Parse(categoryInfo[2]);
+                list[i] = new DetailBill
+                {
+                    Id = int.Parse(detailInfo[0]),
+                    productId = int.Parse(detailInfo[1]),
+                    quantity = int.Parse(detailInfo[2])
+                };
             }
 
             file.Close();
@@ -88,10 +91,11 @@ namespace DoAnCuoiKy_KTLT.XyLyLuuTru
             {
                 if (list[i].Id == detail.Id)
                 {
-                    list[i] = detail;
+                    list[i].productId = detail.productId;
+                    list[i].quantity = detail.quantity;
 
                     SaveNewListToDB(list);
-                    return detail;
+                    return list[i];
                 }
             }
 
@@ -113,8 +117,6 @@ namespace DoAnCuoiKy_KTLT.XyLyLuuTru
                 }
             }
             SaveNewListToDB(newList);
-
-
         }
     }
 }

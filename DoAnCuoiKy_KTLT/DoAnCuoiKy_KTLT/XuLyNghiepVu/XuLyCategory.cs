@@ -41,14 +41,9 @@ namespace DoAnCuoiKy_KTLT.XuLyNghiepVu
         {
             if (id > 0 && !string.IsNullOrEmpty(name)) 
             {
-                Category cate;
-                cate.Id = id;
-                cate.Name = name;
-               
-
+                Category cate = new Category(id, name);              
                 return cate;
             }
-
             return null;
         }
 
@@ -72,13 +67,10 @@ namespace DoAnCuoiKy_KTLT.XuLyNghiepVu
         {
             Category? category = SearchCategoryById(id);
 
-            if (category.HasValue)
+            if (category != null)
             {
-                Category newCategory = category.Value;
-                newCategory.Name = name;
-                
-
-                return LuuTruCategory.EditCategory(newCategory);
+                category.Name = name;
+                return LuuTruCategory.EditCategory(category);
             }
 
             return null;
@@ -126,10 +118,7 @@ namespace DoAnCuoiKy_KTLT.XuLyNghiepVu
 
         public static void DeleteCategory(int id)
         {
-
             LuuTruCategory.DeleteCategory(id);
-
-
         }
 
     }
